@@ -10,6 +10,17 @@ import "swiper/css";
 import "swiper/css/navigation";
 import ProductCardSkeleton from "../../../components/products/ProductCardSkeleton";
 
+const swiperConfig = {
+  spaceBetween: 16,
+  slidesPerView: 1,
+  slidesPerGroup: 1,
+  breakpoints: {
+    576: { slidesPerView: 2, slidesPerGroup: 2 },
+    768: { slidesPerView: 3, slidesPerGroup: 3 },
+    992: { slidesPerView: 4, slidesPerGroup: 4 },
+  },
+};
+
 export default function FeaturedProducts() {
   const dispatch = useDispatch();
   const { products, isLoading, error } = useSelector((store) => store.products);
@@ -36,7 +47,7 @@ export default function FeaturedProducts() {
             </div>
           </div>
 
-          <Swiper slidesPerView={4} slidesPerGroup={4}>
+          <Swiper {...swiperConfig}>
             {Array.from({ length: 4 }, (_, index) => (
               <SwiperSlide key={index}>
                 <ProductCardSkeleton />
@@ -110,6 +121,7 @@ export default function FeaturedProducts() {
           </div>
 
           <Swiper
+            {...swiperConfig}
             modules={[Navigation]}
             navigation={{
               prevEl: ".prev-products",
@@ -119,14 +131,9 @@ export default function FeaturedProducts() {
               swiper.params.navigation.prevEl = ".prev-products";
               swiper.params.navigation.nextEl = ".next-products";
             }}
-            slidesPerGroup={4}
-            slidesPerView={4}
           >
             {products.map((product) => (
-              <SwiperSlide
-                key={product.id}
-                className="col-12 col-sm-6 col-lg-3"
-              >
+              <SwiperSlide key={product.id}>
                 <ProductCard product={product} />
               </SwiperSlide>
             ))}
